@@ -1,5 +1,16 @@
 TARGET = OIB
 
+LIBDIR = lib/
+INCDIR = include/
+
+HELPERDIR = ../HelperFuncs/
+HELPERINC = $(HELPERDIR)include/
+HELPERLIB = $(HELPERDIR)lib/
+
+MOLTNDIR = ../MOLTN/
+MOLTNINC = $(MOLTNDIR)include/
+MOLTNLIB = $(MOLTNDIR)lib/
+
 DEV_CFLAGS = -g -fsanitize=address,undefined -fno-omit-frame-pointer
 DEV_LDFLAGS = -fsanitize=address,undefined
 
@@ -9,7 +20,7 @@ TSAN_LDFLAGS = -fsanitize=thread
 PROD_CFLAGS = -O2
 PROD_LDFLAGS =
 
-CFLAGS = -MMD -MP
+CFLAGS = -MMD -MP -I$(HELPERINC) -I$(MOLTNINC) -I$(INCDIR)
 LDFLAGS =
 
 dev: CFLAGS += $(DEV_CFLAGS)
@@ -24,49 +35,37 @@ prod: CFLAGS += $(PROD_CFLAGS)
 prod: LDFLAGS += $(PROD_LDFLAGS)
 prod: $(TARGET)
 
-MOLTNDIR = ../MOLTN/
 
 # Linking
-$(TARGET): OIB.h libOIB.a libMoltnCore.a libHelper.a  main.o  
-	gcc main.o -o $@ $(LDFLAGS) libOIB.a libMoltnCore.a libHelper.a -lm
+$(TARGET): $(INCDIR)OIB.h $(LIBDIR)libOIB.a $(MOLTNDIR)libMoltnCore.a $(HELPERDIR)libHelper.a  main.o  
+	gcc main.o -o $@ $(LDFLAGS) $(LIBDIR)libOIB.a -L$(MOLTNLIB) -lMoltnCore -L$(HELPERLIB) -lHelper -lm
 
-libHelper.a:
+$(HELPERDIR)libHelper.a:
+	$(MAKE) -C $(HELPERDIR)
+
+$(MOLTNDIR)libMoltnCore.a:
 	$(MAKE) -C $(MOLTNDIR)
-	cp $(MOLTNDIR)libHelper.a .
-
-libMoltnCore.a:
-	$(MAKE) -C $(MOLTNDIR)
-	cp $(MOLTNDIR)libMoltnCore.a .
-
-MoltnCore.h:
-	$(MAKE) -C $(MOLTNDIR)
-	cp $(MOLTNDIR)MoltnCore.h .
-
-OIB.h: MoltnCore.h inpEvent.h
-	@echo "Generating inputouput header"
-	@echo "#pragma once" > OIB.h
-	@cat MoltnCore.h renderFrame.h inpEvent.h >> OIB.h
 
 # Static lib
-libOIB.a: renderFrame.o
+$(LIBDIR)libOIB.a: renderFrame.o | $(LIBDIR)
 	ar rs $@ $^
 
 # Compiling
 main.o: main.c
 	gcc $(CFLAGS) -c main.c -o $@
 
-renderFrame.o: renderFrame.c renderFrame.h
+renderFrame.o: renderFrame.c $(INCDIR)renderFrame.h
 	gcc $(CFLAGS) -c renderFrame.c -o $@
+
+$(LIBDIR):
+	mkdir -p $(LIBDIR)
 
 # tools
 clean:
-	rm -f *.o *.a *.d
+	rm -f *.o *.d
 
 fclean:
-	rm -f $(TARGET) *.o *.a *.d MoltnCore.h OIB.h
-
-fixTerminal:
-	stty sane
+	rm -f $(TARGET) *.o *.d $(LIBDIR)libOIB.a 
 
 # merges .d files into dependency graph
 -include *.d
