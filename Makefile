@@ -37,13 +37,13 @@ prod: $(TARGET)
 
 
 # Linking
-$(TARGET): $(INCDIR)OIB.h $(LIBDIR)libOIB.a $(MOLTNDIR)libMoltnCore.a $(HELPERDIR)libHelper.a  main.o  
+$(TARGET): $(INCDIR)OIB.h $(LIBDIR)libOIB.a $(MOLTNLIB)libMoltnCore.a $(MOLTNINC)MoltnCore.h $(HELPERLIB)libHelper.a  $(HELPERINC)helper.h main.o  
 	gcc main.o -o $@ $(LDFLAGS) $(LIBDIR)libOIB.a -L$(MOLTNLIB) -lMoltnCore -L$(HELPERLIB) -lHelper -lm
 
-$(HELPERDIR)libHelper.a:
+$(HELPERLIB)libHelper.a:
 	$(MAKE) -C $(HELPERDIR)
 
-$(MOLTNDIR)libMoltnCore.a:
+$(MOLTNLIB)libMoltnCore.a:
 	$(MAKE) -C $(MOLTNDIR)
 
 # Static lib
