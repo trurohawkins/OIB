@@ -27,6 +27,7 @@ typedef struct {
 extern RenderFrame frames[NUM_FRAMES];
 extern atomic_int renderWriteIndex;
 extern atomic_int renderReadIndex;
+extern atomic_int renderActiveIndex;
 
 extern atomic_int newRender;
 

@@ -4,6 +4,7 @@
 RenderFrame frames[NUM_FRAMES];
 atomic_int renderWriteIndex;
 atomic_int renderReadIndex;
+atomic_int renderActiveIndex;
 
 atomic_int newRender = 0;
 atomic_int windowResized = 0;
@@ -18,7 +19,7 @@ void freeRenderFrames() {
 }
 
 void makeRenderFrames(int width, int height) {
-	printf("making renderframes %i, %i\n", width, height);
+	//printf("making renderframes %i, %i\n", width, height);
 	for (int i = 0; i < NUM_FRAMES; i++) {
 		frames[i].width = width;
 		frames[i].height = height;
@@ -28,10 +29,25 @@ void makeRenderFrames(int width, int height) {
 	screenY = height;
 }
 
+int findFreeFrame() {
+	int read = atomic_load_explicit(&renderReadIndex, memory_order_acquire);
+	int active = atomic_load_explicit(&renderActiveIndex, memory_order_acquire);
+	for (int i = 0; i < NUM_FRAMES; i++) {
+		if (i != read && i != active) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 void renderFrame(Glyph *glyphs, int *poses, int glyphCount) {
 	// atomic load next frame
-	int next = atomic_load(&renderReadIndex);
-	int newFrame = (next + 1) % NUM_FRAMES;
+	//int next = atomic_load_explicit(&renderReadIndex, memory_order_acquire);
+	//int newFrame = (next + 1) % NUM_FRAMES;
+	int newFrame = findFreeFrame();
+	if (newFrame == -1) {
+		return;
+	}
 	//populate B
 	Glyph border = {
 		.fr = 128,
