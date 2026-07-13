@@ -18,6 +18,26 @@ typedef struct {
 } Glyph;
 
 typedef struct {
+	bool figure;
+	char symbol;
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+
+	int priority;
+} rend;
+
+typedef struct {
+ int screenPos[2];
+ rend sigil;
+} RenderCommand;
+
+typedef struct {
+	void *(*render)(void*);
+	void *data;
+} RenderObject;
+
+typedef struct {
 	int width;
 	int height;
 	Glyph *content;
@@ -36,6 +56,7 @@ extern int screenY;
 
 void freeRenderFrames();
 void makeRenderFrames(int width, int height);
+void renderObjects(linkedList *renders);
 void renderFrame(Glyph *glyphs, int *poses, int num);
 
 void setNewRender();
