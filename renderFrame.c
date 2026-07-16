@@ -42,9 +42,21 @@ bool startRendering() {
 
 void addRenderCommand(RenderCommand reco) {
 	if (currentFrame >= 0 && currentFrame < NUM_FRAMES) {
-		if (frames[currentFrame].num < RENDER_COMMAND_MAX) {
-			frames[currentFrame].queue[frames[currentFrame].num] = reco;
-			frames[currentFrame].num++;;
+		RenderFrame *frame = &frames[currentFrame];
+		if (frame->num < RENDER_COMMAND_MAX) {
+			int pos = frame->num;
+			for (int i = 0; i < frame->num; i++) {
+				RenderCommand chk = frame->queue[i];
+				if (chk.layer > reco.layer) {
+					pos = i;
+					break;
+				}
+			}
+			for (int i = frame->num; i >= pos; i--) {
+				frame->queue[i+1] = frame->queue[i];
+			}
+			frame->queue[pos] = reco;
+			frame->num++;;
 		}
 	}
 }

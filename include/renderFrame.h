@@ -11,6 +11,7 @@ typedef struct {
 	uint8_t r;
 	uint8_t g;
 	uint8_t b;
+	int layer;
 } RenderCommand;
 
 #define RENDER_COMMAND_MAX 10000
