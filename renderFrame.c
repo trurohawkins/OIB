@@ -44,6 +44,7 @@ void addRenderCommand(RenderCommand reco) {
 	if (currentFrame >= 0 && currentFrame < NUM_FRAMES) {
 		RenderFrame *frame = &frames[currentFrame];
 		if (frame->num < RENDER_COMMAND_MAX) {
+			/*
 			int pos = frame->num;
 			for (int i = 0; i < frame->num; i++) {
 				RenderCommand chk = frame->queue[i];
@@ -55,7 +56,8 @@ void addRenderCommand(RenderCommand reco) {
 			for (int i = frame->num; i >= pos; i--) {
 				frame->queue[i+1] = frame->queue[i];
 			}
-			frame->queue[pos] = reco;
+			*/
+			frame->queue[frame->num] = reco;
 			frame->num++;;
 		}
 	}
