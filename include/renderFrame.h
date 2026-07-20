@@ -15,6 +15,7 @@ typedef struct {
 } RenderCommand;
 
 #define RENDER_COMMAND_MAX 10000
+#define MAX_RENDER_LAYERS 16
 typedef struct {
 	int num;
 	RenderCommand queue[RENDER_COMMAND_MAX];
@@ -41,6 +42,7 @@ void updateScreenSize(int width, int height);
 
 bool startRendering();
 void addRenderCommand(RenderCommand reco);
+void sortRenderCommands();
 void sendRenderFrame();
 
 void setNewRender();
