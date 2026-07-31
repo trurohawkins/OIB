@@ -7,11 +7,13 @@
 
 typedef struct {
 	int screenPos[2];
-	int sigil;
 	uint8_t r;
 	uint8_t g;
 	uint8_t b;
 	int layer;
+	
+	int type;
+	int index;
 } RenderCommand;
 
 #define RENDER_COMMAND_MAX 10000
