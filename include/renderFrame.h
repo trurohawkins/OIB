@@ -5,15 +5,19 @@
 #include <stdatomic.h>
 #include <stdio.h>
 
+#define RENDER_BUFFER_SIZE 256
 typedef struct {
+	int layer;
+	int type;
+	int index;
+
+	uint8_t data[RENDER_BUFFER_SIZE];
+	/*
 	int screenPos[2];
 	uint8_t r;
 	uint8_t g;
 	uint8_t b;
-	int layer;
-	
-	int type;
-	int index;
+	*/
 } RenderCommand;
 
 #define RENDER_COMMAND_MAX 10000
