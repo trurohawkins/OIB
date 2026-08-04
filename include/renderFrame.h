@@ -10,14 +10,9 @@ typedef struct {
 	int layer;
 	int type;
 	int index;
+	int cmd;
 
 	uint8_t data[RENDER_BUFFER_SIZE];
-	/*
-	int screenPos[2];
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
-	*/
 } RenderCommand;
 
 #define RENDER_COMMAND_MAX 10000
