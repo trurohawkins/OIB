@@ -25,7 +25,6 @@ typedef struct {
 typedef struct {
 	void *(*render)(void*);
 	void *data;
-	int lastRender;
 } RenderObject;
 
 #define NUM_FRAMES 3
