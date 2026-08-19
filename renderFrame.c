@@ -95,3 +95,21 @@ void setNewRender() {
 void windowResizeCallback(int sig) {
 	atomic_store_explicit(&windowResized, 1, memory_order_release);
 }
+
+Color mixColors(Color *a, Color *b, float t) {
+	Color ret = {
+		.vals = {0, 0, 0},
+	};
+	if (a || b) {
+		if (!a) {
+			return *b;
+		} else if (!b) {
+			return *a;
+		}
+		for (int i = 0; i < 3; i++) {
+			ret.vals[0] = lerp(a->vals[i], b->vals[i], t);
+		}
+	}
+	return ret;
+}
+

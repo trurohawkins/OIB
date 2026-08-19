@@ -50,4 +50,20 @@ void sendRenderFrame();
 void setNewRender();
 void windowResizeCallback(int sig);
 
+
+typedef struct {
+	int x;
+	int y;
+} Pos;
+
+typedef struct {
+	uint8_t vals[3];
+} Color;
+
+typedef struct {
+	Pos pos;
+	Color color;
+} PosColor;
+
+Color mixColors(Color *a, Color *b, float t);
 #endif
