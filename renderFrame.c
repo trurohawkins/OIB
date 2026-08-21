@@ -80,16 +80,12 @@ void sendRenderFrame() {
 	sortRenderCommands();
 	atomic_store_explicit(&renderWriteIndex, currentFrame, memory_order_release);
 	//signal redraw
-	setNewRender();
-	currentFrame = -1;
-}
-
-void setNewRender() {
 	atomic_store_explicit(&newRender, 1, memory_order_release);
 	uint64_t v = 1;
 	if (write(outputPoll.handler.fd, &v, sizeof(v)) == -1) {
-		perror("write outpoll fd");
+		perror("send render frame write outpoll fd");
 	}
+	currentFrame = -1;
 }
 
 void windowResizeCallback(int sig) {

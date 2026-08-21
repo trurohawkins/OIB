@@ -47,7 +47,6 @@ void addRenderCommand(RenderCommand reco);
 void sortRenderCommands();
 void sendRenderFrame();
 
-void setNewRender();
 void windowResizeCallback(int sig);
 
 
