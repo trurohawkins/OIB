@@ -47,8 +47,8 @@ enum {
     KEY_DELETE      = 128,
 
     KEY_UP,
-    KEY_DOWN,
     KEY_LEFT,
+    KEY_DOWN,
     KEY_RIGHT,
 
     KEY_HOME,
