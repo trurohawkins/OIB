@@ -49,6 +49,7 @@ void sendRenderFrame();
 
 void windowResizeCallback(int sig);
 
+#include "color.h"
 
 typedef struct {
 	int x;
@@ -56,13 +57,8 @@ typedef struct {
 } Pos;
 
 typedef struct {
-	uint8_t vals[3];
-} Color;
-
-typedef struct {
 	Pos pos;
 	Color color;
 } PosColor;
 
-Color mixColors(Color *a, Color *b, float t);
 #endif

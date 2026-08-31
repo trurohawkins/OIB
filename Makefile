@@ -47,7 +47,7 @@ $(MOLTNLIB)libMoltnCore.a:
 	$(MAKE) -C $(MOLTNDIR)
 
 # Static lib
-$(LIBDIR)libOIB.a: renderFrame.o | $(LIBDIR)
+$(LIBDIR)libOIB.a: renderFrame.o color.o | $(LIBDIR)
 	ar rs $@ $^
 
 # Compiling
@@ -56,6 +56,9 @@ main.o: main.c
 
 renderFrame.o: renderFrame.c $(INCDIR)renderFrame.h
 	gcc $(CFLAGS) -c renderFrame.c -o $@
+
+color.o: color.c $(INCDIR)color.h
+	gcc $(CFLAGS) -c color.c -o $@
 
 $(LIBDIR):
 	mkdir -p $(LIBDIR)
