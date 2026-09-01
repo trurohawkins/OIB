@@ -4,6 +4,12 @@
 #include <stdlib.h>
 #include <stdatomic.h>
 #include <stdio.h>
+#include "color.h"
+
+typedef struct {
+	int x;
+	int y;
+} Pos;
 
 #define RENDER_BUFFER_SIZE 256
 typedef struct {
@@ -12,6 +18,7 @@ typedef struct {
 	int index;
 	int cmd;
 
+	Pos pos;
 	uint8_t data[RENDER_BUFFER_SIZE];
 } RenderCommand;
 
@@ -48,17 +55,5 @@ void sortRenderCommands();
 void sendRenderFrame();
 
 void windowResizeCallback(int sig);
-
-#include "color.h"
-
-typedef struct {
-	int x;
-	int y;
-} Pos;
-
-typedef struct {
-	Pos pos;
-	Color color;
-} PosColor;
 
 #endif
