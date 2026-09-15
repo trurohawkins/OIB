@@ -2,6 +2,7 @@ TARGET = OIB
 
 LIBDIR = lib/
 INCDIR = include/
+SRCDIR = src/
 
 HELPERDIR = ../HelperFuncs/
 HELPERINC = $(HELPERDIR)include/
@@ -20,7 +21,7 @@ TSAN_LDFLAGS = -fsanitize=thread
 PROD_CFLAGS = -O2
 PROD_LDFLAGS =
 
-CFLAGS = -MMD -MP -I$(HELPERINC) -I$(MOLTNINC) -I$(INCDIR)
+CFLAGS = -MMD -MP -I$(HELPERINC) -I$(MOLTNINC) -I$(INCDIR) -I$(SRCDIR)
 LDFLAGS =
 
 dev: CFLAGS += $(DEV_CFLAGS)
@@ -47,18 +48,21 @@ $(MOLTNLIB)libMoltnCore.a:
 	$(MAKE) -C $(MOLTNDIR)
 
 # Static lib
-$(LIBDIR)libOIB.a: renderFrame.o color.o | $(LIBDIR)
+$(LIBDIR)libOIB.a: renderFrame.o color.o text.o | $(LIBDIR)
 	ar rs $@ $^
 
 # Compiling
 main.o: main.c
 	gcc $(CFLAGS) -c main.c -o $@
 
-renderFrame.o: renderFrame.c $(INCDIR)renderFrame.h
-	gcc $(CFLAGS) -c renderFrame.c -o $@
+renderFrame.o: $(SRCDIR)renderFrame.c $(INCDIR)renderFrame.h
+	gcc $(CFLAGS) -c $(SRCDIR)renderFrame.c -o $@
 
-color.o: color.c $(INCDIR)color.h
-	gcc $(CFLAGS) -c color.c -o $@
+color.o: $(SRCDIR)color.c $(INCDIR)color.h
+	gcc $(CFLAGS) -c $(SRCDIR)color.c -o $@
+
+text.o: $(SRCDIR)text.c $(INCDIR)text.h
+	gcc $(CFLAGS) -c $(SRCDIR)text.c -o $@
 
 $(LIBDIR):
 	mkdir -p $(LIBDIR)
