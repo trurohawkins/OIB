@@ -56,8 +56,12 @@ void sortRenderCommands() {
 	if (currentFrame >= 0 && currentFrame < NUM_FRAMES) {
 		memset(counts, 0, sizeof(int) * MAX_RENDER_LAYERS);
 		for (int i = 0; i < curCommands.num; i++) {
-			RenderCommand reco = curCommands.queue[i];
-			counts[reco.layer]++;
+			RenderCommand *reco = &curCommands.queue[i];
+			//so we dont overflow, should give out error message
+			if (reco->layer >= MAX_RENDER_LAYERS) {
+				reco->layer = MAX_RENDER_LAYERS - 1;
+			}
+			counts[reco->layer]++;
 		}
 		//char buff[100];
 		// compute prefix sum
