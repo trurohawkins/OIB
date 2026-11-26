@@ -12,5 +12,6 @@ typedef struct {
 } Text;
 
 Text *makeText(char *string, int width);
+int countLines(char *string, int width);
 void fillText(Text *txt, char *string);
 void freeText(Text *txt);

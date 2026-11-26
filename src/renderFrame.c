@@ -42,6 +42,10 @@ bool startRendering() {
 		return false;
 	}
 }
+bool copyRenderData(RenderCommand *reco, void *data, int size) {
+	memcpy(reco->data, data, min(size, RENDER_BUFFER_SIZE));
+	return size < RENDER_BUFFER_SIZE;
+}
 
 void addRenderCommand(RenderCommand reco) {
 	if (currentFrame >= 0 && currentFrame < NUM_FRAMES) {

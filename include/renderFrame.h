@@ -49,6 +49,7 @@ extern int screenY;
 
 void updateScreenSize(int width, int height); 
 
+bool copyRenderData(RenderCommand *reco, void *data, int size);
 bool startRendering();
 void addRenderCommand(RenderCommand reco);
 void sortRenderCommands();

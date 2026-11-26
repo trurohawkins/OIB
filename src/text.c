@@ -7,6 +7,23 @@ Text *makeText(char *string, int width) {
 	return txt;
 }
 
+int countLines(char *string, int width) {
+	int len = strlen(string);
+	width = min(width, len);
+	int xp = 0;
+	int lines = 1;
+	for (int i = 0; i < len; i++) {
+		xp++;
+		if (xp % width == 0 || string[i] == '\n') {
+			if (i + 1 < len) {
+				lines++;
+				xp = 0;
+			}
+		}
+	}
+	return lines;
+}
+
 void fillText(Text *txt, char *string) {
 	int len = strlen(string);
 	if (len > 0) {
@@ -21,18 +38,7 @@ void fillText(Text *txt, char *string) {
 			txt->string = 0;
 			memcpy(txt->inlineString, string, len);
 		}
-		int width = min(txt->width, len);
-		int xp = 0;
-		txt->lines = 1;
-		for (int i = 0; i < len; i++) {
-			xp++;
-			if (xp % width == 0 || string[i] == '\n') {
-				if (i + 1 < len) {
-					txt->lines++;
-					xp = 0;
-				}
-			}
-		}
+		txt->lines = countLines(string, txt->width);
 	} else {
 		txt->lines = 1;
 	}
